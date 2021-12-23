@@ -1,0 +1,70 @@
+{
+  "releaseChannel": "canary",
+  "periodicRuns": [
+    {
+      "name": "Run Nightwatch tests everyday at 11:00 MSK",
+      "slackChannel": "G0KU8D6P2",
+      "event": { "schedule": [{ "cron": "0 8 * * *" }] },
+      "urls": ["https://csssr.com/"],
+      "commands": ["yarn et nightwatch:run --browser remote_chrome"]
+    }
+  ],
+  "tools": {
+    "@csssr/e2e-tools-nightwatch": {
+      "browsers": {
+        "local_chrome": {
+          "default": true,
+          "type": "webdriver",
+          "desiredCapabilities": {
+            "browserName": "chrome",
+            "goog:chromeOptions": { "args": ["--window-size=1200,800"] }
+          },
+          "globals": { "skipScreenshotAssertions": true }
+        },
+        "remote_chrome": {
+          "remote": true,
+          "type": "selenium",
+          "url": "https://chrome.selenium.csssr.cloud",
+          "basicAuth": {
+            "credentialsId": "chromedriver",
+            "username_env": "CHROMEDRIVER_USERNAME",
+            "password_env": "CHROMEDRIVER_PASSWORD"
+          },
+          "desiredCapabilities": {
+            "browserName": "chrome",
+            "goog:chromeOptions": {
+              "w3c": false,
+              "args": [
+                "--headless",
+                "--no-sandbox",
+                "--disable-gpu",
+                "--window-size=1200,800"
+              ]
+            }
+          },
+          "globals": { "skipScreenshotAssertions": false }
+        },
+        "remote_firefox": {
+          "remote": true,
+          "type": "selenium",
+          "url": "https://firefox.selenium.csssr.cloud",
+          "basicAuth": {
+            "credentialsId": "chromedriver",
+            "username_env": "CHROMEDRIVER_USERNAME",
+            "password_env": "CHROMEDRIVER_PASSWORD"
+          },
+          "desiredCapabilities": {
+            "browserName": "firefox",
+            "moz:firefoxOptions": {
+              "args": ["--headless", "-width=1920", "-height=1080"]
+            }
+          },
+          "globals": { "skipScreenshotAssertions": false }
+        }
+      }
+    }
+  },
+  "projectName": "csssr.com",
+  "repositorySshAddress": "git@github.com:csssr-dreamteam/csssr.com.git",
+  "defaultLaunchUrl": "https://csssr.com/"
+}
